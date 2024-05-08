@@ -46,10 +46,10 @@ menubar.add_cascade(
 )  # Adding the options dropdown to the menu bar
 # Adding options to the dropdown menu
 menu_option.add_command(
-    label="New game", command=lambda: engine.newgame(labels, label_points)
+    label="New Game", command=lambda: engine.newgame(labels, label_points)
 )
 menu_option.add_command(
-    label="Erase highscore", command=lambda: engine.reset_leaderboard(label_highscore)
+    label="Reset Highscore", command=lambda: engine.reset_leaderboard(label_highscore)
 )
 menu_option.add_separator()  # Adding a separator between options
 menu_option.add_command(label="Quit game", command=root.quit)
