@@ -95,12 +95,13 @@ def merge_right(tab: list, score: int) -> [list, int]:
         [list, int]: The updated game board and the updated score.
     """
     for i in range(4):
-        for j in range(3):
+        for j in range(2, -1, -1):
             if tab[i][j + 1] == tab[i][j]:
                 tab[i][j] = 0
                 tab[i][j + 1] *= 2
                 score = score + tab[i][j + 1]
     return tab, score
+
 
 
 def move_left(tab: list) -> list:
@@ -219,7 +220,7 @@ def merge_down(tab: list, score: int) -> [list, int]:
     Returns:
         [list, int]: The updated game board and the updated score.
     """
-    for i in range(3):
+    for i in range(2, -1, -1):
         for j in range(4):
             if tab[i + 1][j] == tab[i][j]:
                 tab[i][j] = 0
