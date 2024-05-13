@@ -4,6 +4,7 @@ version = "1.0"
 description = "Default template for PDM package"
 authors = [
     {name = "Balthu", email = "lgoffaux@gmail.com"},
+    {name = "Balthurion", email = "lgoffaux@gmail.com"},
 ]
 dependencies = []
 requires-python = "==3.12.*"

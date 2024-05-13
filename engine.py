@@ -1,6 +1,19 @@
 """
 This module implements a simple 2048 game using Tkinter for the GUI.
 
+Dependencies:
+    - random.randint: Used to generate random numbers for initializing the game board and adding new tiles.
+    - random.choice: Used to choose between adding a "2" or "4" when adding a new tile.
+    - tkinter.messagebox: Used to display message boxes for game over and new game prompts.
+    - copy.deepcopy: Used to create a deep copy of the game board to check for changes.
+    - tkinter: Used for creating the graphical user interface.
+    - json: Used for handling leaderboard data storage and retrieval.
+    - pygame: Used for playing sound effects during the game.
+    - pathlib.Path: Used for defining the path to the leaderboard file.
+
+Variables:
+    - LEADERBOARD (Path): Path object representing the location of the leaderboard file.
+
 Functions:
     - initialisation() -> list: Creates a 4x4 array initialized with zeros and places two random values in the array.
     - move_up(tab: list) -> list: Moves values upwards in the array.
@@ -269,9 +282,9 @@ def position(
     points = score
     gameboard = tab
     update_gameboard_labels(labels)
-    update_points(points_label, score)
+    update_points(points_label, points)
     update_top_score(label_highscore, points)
-    if check_endgame(tab):
+    if check_endgame(gameboard):
         newgame(labels, points_label)
 
 
