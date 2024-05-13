@@ -84,7 +84,7 @@ for i in range(4):
 label_points = tk.Label(
     info_frame,
     font=("Franklin Gothic Book", 20),
-    text=f"Points : {engine.points}",
+    text=f"Your score : {engine.points}",
     bg="#766F65",
     fg="white",
 )
@@ -94,7 +94,7 @@ label_points.pack(pady=5)
 label_highscore = tk.Label(
     info_frame,
     font=("Franklin Gothic Book", 20),
-    text=f"BEST : {engine.highscore}",
+    text=f"Best score : {engine.highscore}",
     bg="#766F65",
     fg="white",
 )

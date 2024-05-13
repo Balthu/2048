@@ -51,17 +51,16 @@ def initialisation() -> list:
         list: A 4x4 array representing the game board.
     """
     # Create a 4x4 array initialized with zeros
-    gameboard_array = [[0 for _ in range(4)] for _ in range(4)]
+    gameboard = [[0 for _ in range(4)] for _ in range(4)]
     # Generate random positions for two initial values
-    random_value = [randint(0, 3) for _ in range(4)]
+    random_position = [randint(0, 3) for _ in range(4)]
     # Ensure the two random positions are not the same
-    while (random_value[0], random_value[1]) == (random_value[2], random_value[3]):
-        random_value[2] = randint(0, 3)
-        random_value[3] = randint(0, 3)
+    while random_position[0:2] == random_position[2:4]:
+        random_position[2:4] = randint(0, 3), randint(0, 3)
     # Place two random values (either 2 or 4) at the generated positions
-    gameboard_array[random_value[0]][random_value[1]] = choice((2, 4))
-    gameboard_array[random_value[2]][random_value[3]] = choice((2, 4))
-    return gameboard_array
+    gameboard[random_position[0]][random_position[1]] = choice((2, 4))
+    gameboard[random_position[2]][random_position[3]] = choice((2, 4))
+    return gameboard
 
 
 def move_right(tab: list) -> list:
@@ -101,7 +100,6 @@ def merge_right(tab: list, score: int) -> [list, int]:
                 tab[i][j + 1] *= 2
                 score = score + tab[i][j + 1]
     return tab, score
-
 
 
 def move_left(tab: list) -> list:
@@ -231,7 +229,7 @@ def merge_down(tab: list, score: int) -> [list, int]:
 
 
 def position(
-        position_user: str, tab: list, score: int, labels, points_label, label_highscore
+    position_user: str, tab: list, score: int, labels, points_label, label_highscore
 ):
     """
     Executes the chosen move by the user and updates the game state.
@@ -456,7 +454,7 @@ color_cells = {}
 
 for i in range(18):
     if i != 0:
-        color_cells[2 ** i] = colorset_cells[i]
+        color_cells[2**i] = colorset_cells[i]
     else:
         # rappel 2 ^ 0 = 1
         color_cells[0] = colorset_cells[i]
@@ -467,9 +465,9 @@ for i in range(18):
     if i == 0:
         color_font[0] = colorset_font[0]
     elif i < 3:
-        color_font[2 ** i] = colorset_font[1]
+        color_font[2**i] = colorset_font[1]
     else:
-        color_font[2 ** i] = colorset_font[2]
+        color_font[2**i] = colorset_font[2]
 
 # Initialize the game board and score
 gameboard = initialisation()
