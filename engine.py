@@ -320,6 +320,28 @@ def check_endgame(tab: list) -> bool:
     Returns:
         bool: True if the game is over, False otherwise.
     """
+    global victory_count
+
+    if any(2048 in element for element in tab) and victory_count == 0:
+        victory_count = 1
+        winner_window = tk.Toplevel(root, bg="#EEDFC8")
+        winner_window.geometry("400x100")
+        winner_window.title("2048 - You win !")
+        winner_window.resizable(False, False)
+        winner_label = tk.Label(
+            winner_window,
+            text="You've reached 2048 ! \n Congratulations!",
+            font=("Arial", 20, "bold"),
+            bg="#EEDFC8",
+            fg="#766F65",
+        )
+        winner_label.pack(padx=5, pady=15)
+        try:
+            pygame.mixer.music.load("fanfare.mp3")
+            pygame.mixer.music.play()
+        except pygame.error:
+            pass
+
     if any(0 in element for element in tab):
         return False
 
@@ -344,20 +366,19 @@ def newgame(labels, labels_point):
         labels: Labels representing the game board in the GUI.
         labels_point: Label displaying the current score in the GUI.
     """
-    global gameboard, points
+    global gameboard, points, victory_count
     try:
         pygame.mixer.music.load("notif.mp3")
         pygame.mixer.music.play()
     except pygame.error:
         pass
-    answer = messagebox.askyesno("Game over", "Do you want to start a new game? ?")
+    answer = messagebox.askyesno("Game over", "Do you want to start a new game?")
     if answer:
         gameboard = initialisation()
         points = 0
+        victory_count = 0
         update_gameboard_labels(labels)
         update_points(labels_point, 0)
-    else:
-        root.quit()
 
 
 def update_gameboard_labels(labels):
@@ -371,6 +392,7 @@ def update_gameboard_labels(labels):
         for j in range(4):
             labels[i][j].config(
                 text=str(gameboard[i][j]),
+                font=font_format[gameboard[i][j]],
                 bg=color_cells[gameboard[i][j]],
                 fg=color_font[gameboard[i][j]],
             )
@@ -384,7 +406,7 @@ def update_points(points_label, score):
         points_label: Label displaying the current score in the GUI.
         score (int): The current score.
     """
-    points_label.config(text=f"Points : {score}")
+    points_label.config(text=f"SCORE \n {score}")
 
 
 def update_top_score(label_highscore, points: int):
@@ -402,11 +424,11 @@ def update_top_score(label_highscore, points: int):
         scores.append(points)
         scores.sort(reverse=True)
         scores = scores[:2]
-        label_highscore.config(text=f"BEST : {max(scores)}")
+        label_highscore.config(text=f"BEST \n {max(scores)}")
         with open(LEADERBOARD, "w", encoding="utf-8") as f:
             json.dump(scores, f)
     else:
-        label_highscore.config(text=f"BEST : {points}")
+        label_highscore.config(text=f"BEST {points}")
 
 
 def top_score() -> int:
@@ -455,36 +477,44 @@ colorset_cells = [
     "#F65E3B",
     "#F65E3B",
     "#EDCC62",
+    "#EDC850",
+    "#EDC542",
+    "#EDC12D",
+    "#EF666D",
+    "#EE4E5A",
+    "#E14338",
+    "#73B3D6",
+    "#5CA0DF",
+    "#007BBE",
 ]
 
-for i in range(9):
-    if i <= 2:
-        colorset_cells.append("#EDC850")
-    else:
-        colorset_cells.append("#3D3A33")
+color_cells = {0: colorset_cells[0]}
 
-color_cells = {}
-
-for i in range(18):
-    if i != 0:
-        color_cells[2**i] = colorset_cells[i]
-    else:
-        # rappel 2 ^ 0 = 1
-        color_cells[0] = colorset_cells[i]
+for i in range(1, 18):
+    color_cells[2**i] = colorset_cells[i]
 
 colorset_font = ["#CDC1B5", "#766F65", "white"]
-color_font = {}
-for i in range(18):
-    if i == 0:
-        color_font[0] = colorset_font[0]
-    elif i < 3:
+color_font = {0: colorset_font[0]}
+for i in range(1, 18):
+    if i < 3:
         color_font[2**i] = colorset_font[1]
     else:
         color_font[2**i] = colorset_font[2]
 
-# Initialize the game board and score
+fontset = [("Arial", 50), ("Arial", 38), ("Arial", 27)]
+font_format = {0: fontset[0]}
+for i in range(1, 18):
+    if i < 10:
+        font_format[2**i] = fontset[0]
+    elif i < 14:
+        font_format[2**i] = fontset[1]
+    else:
+        font_format[2**i] = fontset[2]
+
+# Initialize the game board, points and victory count
 gameboard = initialisation()
 points = 0
+victory_count = 0
 
 # Retrieve the top score
 highscore = top_score()
